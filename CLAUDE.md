@@ -62,6 +62,12 @@ The one deliberate deviation is the `max-width: 640px` block, because a 0.6in
 print sheet is unreadable on a phone. It relaxes type size and stacks the
 title/date rows; it does not restyle the document.
 
+`src/favicon.svg` is a **placeholder**, not a settled mark: Sam is having a real
+logo designed and this S is standing in until it arrives. Swapping it is just
+replacing that file, since the route, the `<link>` tag, the content type and the
+caching are already wired. Whatever replaces it has to stay legible at 16px and
+read on both light and dark tab bars.
+
 ## Deploys
 
 Push to `main`, or a `repository_dispatch` of type `resume-updated` from the
