@@ -168,8 +168,14 @@ p.summary { margin:6px 0 0; font-size:13px; line-height:1.35; text-align:justify
 ul { margin:2px 0 0; padding-left:17px; }
 li { font-size:12.5px; line-height:1.34; margin:1px 0; text-align:justify; }
 p.skill { margin:2px 0 0 10px; font-size:13px; line-height:1.35; }
-.dl { margin:22px 0 0; text-align:center; font-size:12.5px; }
-.dl a { color:#333; }
+/* Sits outside the sheet: the resume is the document, this is chrome. Fixed so
+   it stays reachable while reading, and hidden from print. */
+.dl { position:fixed; top:20px; right:20px; display:flex; align-items:center;
+  justify-content:center; width:38px; height:38px; color:#333; background:var(--bg);
+  border:1px solid #c9c9cd; border-radius:7px; box-shadow:0 1px 2px rgba(0,0,0,.1);
+  transition:border-color .15s, color .15s; }
+.dl:hover, .dl:focus-visible { color:#000; border-color:#8b8b91; }
+.dl svg { width:17px; height:17px; display:block; }
 
 /* A print sheet is not readable at 390px. Keep the layout, relax the type. */
 @media (max-width: 640px) {
@@ -184,7 +190,10 @@ p.skill { margin:2px 0 0 10px; font-size:13px; line-height:1.35; }
   .right { white-space:normal; font-size:13.5px; color:#555; }
   .entry { padding-left:0; }
   p.skill { margin-left:0; }
+  .dl { top:12px; right:12px; }
 }
+
+@media print { .dl { display:none; } }
 `.trim();
 
 const desc = description(resume.sections);
@@ -207,10 +216,15 @@ ${STYLE}
 </style>
 </head>
 <body>
+<a class=dl href="${PDF_PATH}" download title="Download PDF" aria-label="Download resume as PDF">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 20h16"/>
+  </svg>
+</a>
 <div class=sheet>
 ${renderHeader(resume.personal)}
 ${renderSections(resume.sections)}
-<p class=dl><a href="${PDF_PATH}" download>Download PDF</a></p>
 </div>
 </body>
 </html>
