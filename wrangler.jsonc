@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-03",
+
+  // A custom domain (rather than a path route) so Cloudflare manages the apex
+  // DNS record and certificate itself. It claims all of samstuhl.com; the
+  // Worker 404s everything that is not the résumé.
+  "routes": [{ "pattern": "samstuhl.com", "custom_domain": true }],
+
+  // Bundles build/assets/resume.pdf into the Worker as an ArrayBuffer.
+  "rules": [{ "type": "Data", "globs": ["**/*.pdf"] }],
+
+  "observability": { "enabled": true }
+}
