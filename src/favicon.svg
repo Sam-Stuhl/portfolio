@@ -1,9 +1,9 @@
-<!-- samstuhl.com. The mark on a plate, matching the composition of the
-     180px apple-touch icon. The 16-unit grid keeps every edge on a whole pixel
-     at 16px, and the plate is what makes the ink bars visible on a dark tab
-     bar. Master and originals: docs/brand/. -->
+<!-- samstuhl.com. Transparent background by choice: the mark sits on whatever
+     the tab strip is. Geometry is a 16-unit grid so every edge lands on a whole
+     pixel at 16px, with 1 unit of margin on all four sides. The 180px
+     apple-touch icon keeps its white plate, because iOS composites its own
+     background and transparency there goes muddy. Originals: docs/brand/. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
-  <rect x="0" y="0" width="16" height="16" fill="#FFFFFF"/>
   <rect x="1" y="1" width="14" height="4" fill="#2E2C29"/>
   <rect x="1" y="6" width="4" height="4" fill="#2E2C29"/>
   <rect x="6" y="6" width="9" height="4" fill="#136A6F"/>
