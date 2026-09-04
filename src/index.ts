@@ -11,9 +11,19 @@
 import { HTML_ETAG, PDF_ETAG, RESUME_HTML } from "./generated/resume";
 import resumePdf from "../build/assets/resume.pdf";
 import favicon from "./favicon.svg";
+import faviconPng from "./favicon-32.png";
+import appleTouchIcon from "./apple-touch-icon.png";
 
 const PDF_FILENAME = "Samuel-Stuhl-Resume.pdf";
 const CACHE = "public, max-age=300, must-revalidate";
+
+// The brand mark, in the three forms browsers actually ask for. Sources and the
+// originals carrying their content credentials are in docs/brand/.
+const ICONS: Record<string, { body: string | ArrayBuffer; type: string }> = {
+  "/favicon.svg": { body: favicon, type: "image/svg+xml; charset=utf-8" },
+  "/favicon-32.png": { body: faviconPng, type: "image/png" },
+  "/apple-touch-icon.png": { body: appleTouchIcon, type: "image/png" },
+};
 
 /** 304 when the client already has this exact build. */
 function notModified(request: Request, etag: string): boolean {
@@ -55,12 +65,10 @@ export default {
       });
     }
 
-    if (pathname === "/favicon.svg") {
-      return new Response(request.method === "HEAD" ? null : favicon, {
-        headers: {
-          "content-type": "image/svg+xml; charset=utf-8",
-          "cache-control": "public, max-age=86400",
-        },
+    const icon = ICONS[pathname];
+    if (icon) {
+      return new Response(request.method === "HEAD" ? null : icon.body, {
+        headers: { "content-type": icon.type, "cache-control": "public, max-age=86400" },
       });
     }
 

@@ -62,11 +62,19 @@ The one deliberate deviation is the `max-width: 640px` block, because a 0.6in
 print sheet is unreadable on a phone. It relaxes type size and stacks the
 title/date rows; it does not restyle the document.
 
-`src/favicon.svg` is a **placeholder**, not a settled mark: Sam is having a real
-logo designed and this S is standing in until it arrives. Swapping it is just
-replacing that file, since the route, the `<link>` tag, the content type and the
-caching are already wired. Whatever replaces it has to stay legible at 16px and
-read on both light and dark tab bars.
+## The brand mark
+
+Three stacked bars, ink `#2E2C29` with a teal `#136A6F` accent, designed 2026-09-04.
+The Worker serves the set browsers actually ask for: `/favicon.svg` (a 3x3
+`crispEdges` grid, deliberately pixel-exact at small sizes), `/favicon-32.png`
+for browsers without SVG favicon support, and `/apple-touch-icon.png` at 180px.
+All three are bundled, and `build/render.mjs` emits the matching `<link>` tags.
+
+`docs/brand/` holds the delivery as received, including the 512px master and the
+originals carrying their C2PA content credentials. **The served `src/favicon.svg`
+has that manifest stripped**: it was 7.7 KB of the 8.1 KB file, against 409 bytes
+of actual artwork, and this one ships on every page. Re-strip rather than
+re-adding it if the mark is ever redrawn.
 
 ## Deploys
 

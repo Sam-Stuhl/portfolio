@@ -1,4 +1,9 @@
 // wrangler's "Data" rule turns an imported .pdf into an ArrayBuffer.
+declare module "*.png" {
+  const content: ArrayBuffer;
+  export default content;
+}
+
 declare module "*.pdf" {
   const content: ArrayBuffer;
   export default content;
