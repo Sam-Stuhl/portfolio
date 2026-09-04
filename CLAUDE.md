@@ -68,6 +68,15 @@ Push to `main`, or a `repository_dispatch` of type `resume-updated` from the
 résumé repo, runs `.github/workflows/deploy.yml`: build, typecheck,
 `wrangler deploy`, then curl the live URL and fail if the résumé is not on it.
 
+The dispatch is sent by `Sam-Stuhl/resume/.github/workflows/notify-site.yml`,
+which fires on a push touching `resume.json` or `resume.pdf` and authenticates
+with a `PORTFOLIO_DISPATCH_TOKEN` secret **in that repo** (a fine-grained PAT
+scoped to this repo with `Contents: Read and write`). If the résumé stops
+updating here, check that workflow's runs first, then whether that token has
+expired. Trigger it by hand with
+`gh workflow run notify-site.yml --repo Sam-Stuhl/resume`.
+Measured 2026-09-03: 29 seconds from that trigger to deployed.
+
 Two repo secrets, both set by Sam and never handled by Claude:
 `CLOUDFLARE_API_TOKEN` (Edit Cloudflare Workers, scoped to the `samstuhl.com`
 zone) and `CLOUDFLARE_ACCOUNT_ID`.
