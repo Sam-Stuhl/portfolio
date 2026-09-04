@@ -1,0 +1,78 @@
+<!doctype html><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Samuel Stuhl — Résumé</title>
+<style>
+:root { --ink:#111; --rule:#111; --muted:#111; --bg:#fff; }
+* { box-sizing:border-box; }
+body { margin:0; background:#e9e9ec; color:var(--ink);
+  font-family:"Latin Modern Roman","Computer Modern",'Times New Roman',Times,serif; }
+.sheet { max-width:8.5in; margin:24px auto; padding:0.55in 0.6in 0.7in; background:var(--bg);
+  box-shadow:0 1px 3px rgba(0,0,0,.18); }
+h1 { font-size:34px; font-weight:700; text-align:center; margin:0 0 6px; letter-spacing:.01em; }
+.contact { text-align:center; margin:0 0 14px; font-size:13.5px; }
+.contact a { color:inherit; }
+.sep { padding:0 2px; }
+h2 { font-variant:small-caps; font-size:16px; font-weight:400; letter-spacing:.03em;
+  margin:14px 0 3px; padding-bottom:2px; border-bottom:1px solid var(--rule); }
+section:first-of-type h2 { margin-top:10px; }
+p.summary { margin:6px 0 0; font-size:13px; line-height:1.35; text-align:justify; }
+.entry { margin:5px 0 7px; padding-left:10px; }
+.row { display:flex; justify-content:space-between; gap:12px; font-size:13px; line-height:1.3; }
+.strong { font-weight:700; }
+.em { font-style:italic; }
+.right { white-space:nowrap; }
+ul { margin:2px 0 0; padding-left:17px; }
+li { font-size:12.5px; line-height:1.34; margin:1px 0; text-align:justify; }
+p.skill { margin:2px 0 0 10px; font-size:13px; line-height:1.35; }
+.dl { margin:22px 0 0; text-align:center; font-size:12.5px; }
+.dl a { color:#333; }
+</style>
+<div class=sheet>
+<header>
+  <h1>Samuel Stuhl</h1>
+  <p class=contact>(732) 712-1514 <span class=sep>|</span> <a href="mailto:sam.stuhl.personal@gmail.com">sam.stuhl.personal@gmail.com</a> <span class=sep>|</span> <a href="https://github.com/Sam-Stuhl">github.com/Sam-Stuhl</a> <span class=sep>|</span> <a href="https://linkedin.com/in/samuel-stuhl">linkedin.com/in/samuel-stuhl</a></p>
+</header>
+<section><h2>Summary</h2>
+<p class=summary>Software engineer with internship experience building production AI agents, Large Language Model (LLM) workflows, and observability infrastructure for developer and support tooling. Comfortable across the full stack with TypeScript, Python, FastAPI, and Cloudflare infrastructure; passionate about shipping clean, tested code that puts users first.</p>
+</section>
+<section><h2>Experience</h2>
+<div class=entry>
+<div class=row><span class=strong>Software Engineering Intern</span><span class=right>Jun 2026 – Aug 2026</span></div>
+<div class=row><span class=em>LumaSoft</span><span class="right em">Hybrid - East Brunswick, NJ</span></div>
+<ul><li>Designed an Intercom-integrated issue writer that auto-drafts customer-reported bug reports from support conversations, adopted by support reps for 97.5% of customer tickets.</li><li>Built lumadot, an autonomous Artificial Intelligence (AI) agent for automated code review integrated with GitHub Actions across ~11 organization repositories; became the org&#x27;s most heavily used agent, reviewing 87% of merged pull requests, with GitHub App authentication and Claude Code-driven prompt/behavior design.</li><li>Built an issue analyst connecting the agent read-only to six external systems (Rollbar, Datadog, Google Cloud, Intercom, MySQL replica, Cloudflare) for cross-system triage, removing the log-access bottleneck for engineers and reaching a 79% approval rate on generated analyses.</li><li>Built luma-logger, a ~1,667 line Cloudflare Worker in TypeScript using Hono and Drizzle Object-Relational Mapping (ORM) over Cloudflare D1; exposes a read-only observability dashboard with run logs, ratings, feedback, and per-run token/cost metrics.</li></ul></div>
+<div class=entry>
+<div class=row><span class=strong>Software Engineer Intern</span><span class=right>Aug 2025 – Dec 2025</span></div>
+<div class=row><span class=em>I-Genie.ai</span><span class="right em">Remote</span></div>
+<ul><li>Engineered Python data pipelines across Search Engine Optimization (SEO)/social datasets with automated Quality Control (QC), and improved Machine Learning (ML)/Natural Language Processing (NLP) workflows by migrating Term Frequency-Inverse Document Frequency (TF-IDF) to FastText and designing Large Language Model (LLM) prompts for relabeling/summaries and corpus curation/translation; boosted accuracy while cutting runtime.</li><li>Built analytics tooling and scalable infrastructure: Streamlit User Interfaces (UIs), Spark over Azure Blob, Databricks/Colab Graphics Processing Units (GPUs); generated JavaScript Object Notation (JSON)-driven charts and presentation-ready insights.</li></ul></div>
+</section>
+<section><h2>Projects</h2>
+<div class=entry><div class=row><span><span class=strong>Notion Planner Integration</span> <span class=sep>|</span> <span class=em>Python, JavaScript, HTML, CSS, FastAPI, Notion API, Canvas API</span></span></div><ul><li>Built a full-stack app integrating Notion with Canvas, Teams, and RenWeb for streamlined academic scheduling.</li><li>Automated assignment imports with a Python backend and JavaScript (JS) frontend, improving workflow efficiency.</li></ul></div>
+</section>
+<section><h2>Leadership &amp; Extracurriculars</h2>
+<div class=entry>
+<div class=row><span class=strong>President, CS Club</span><span class=right></span></div>
+<div class=row><span class=em>Middlesex College</span><span class="right em"></span></div>
+<ul><li>Led 5-member executive team at 16, organized planning meetings, and created Python curriculum.</li><li>Assigned teaching roles and ran lessons on Python basics, fostering hands-on coding experience.</li></ul></div>
+<div class=entry>
+<div class=row><span class=strong>Software Captain, Robotics Team</span><span class=right></span></div>
+<div class=row><span class=em>Timothy Christian School</span><span class="right em"></span></div>
+<ul><li>Directed programming subteam and coordinated development tasks.</li></ul></div>
+</section>
+<section><h2>Technical Skills</h2>
+<p class=skill><span class=strong>Languages</span>: Python, TypeScript, JavaScript, Java, Swift, Bash</p>
+<p class=skill><span class=strong>Frameworks &amp; Libraries</span>: FastAPI, Hono, Drizzle ORM, React, scikit-learn, Pandas, NumPy, Streamlit, PySpark</p>
+<p class=skill><span class=strong>Cloud &amp; Data</span>: Cloudflare Workers, Cloudflare D1, Databricks, Google Colab, Azure Blob, Spark, Power BI, MySQL</p>
+<p class=skill><span class=strong>Developer Tools</span>: Git, GitHub, GitHub Actions, Claude Code, VS Code, Xcode, Cursor AI, Android Studio</p>
+</section>
+<section><h2>Education</h2>
+<div class=entry>
+<div class=row><span class=strong>New Jersey Institute of Technology, Ying Wu College of Computing</span><span class=right>Sept 2026 – May 2030</span></div>
+<div class=row><span></span><span class="right em">Newark, NJ, USA</span></div>
+</div>
+<div class=entry>
+<div class=row><span class=strong>Timothy Christian School</span><span class=right>Sept 2021 – Jun 2026</span></div>
+<div class=row><span class=em>GPA: 4.489</span><span class="right em">Piscataway, NJ, USA</span></div>
+<ul><li><span class=strong>Relevant Coursework:</span> Salutatorian; AP CSA, AP CSP, AP Calculus BC, AP Calculus AB, Honors Physics; STEM Scholars Program: shadowed at Merck (data analytics, Power BI, dimensional modeling) and Evergreen Financial Group (portfolio construction, trading, investment vehicles)</li></ul>
+</div>
+</section>
+<p class=dl><a href="https://github.com/Sam-Stuhl/resume/raw/main/resume.pdf">Download PDF</a></p></div>
