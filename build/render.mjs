@@ -205,6 +205,7 @@ const html = `<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${e(resume.personal.name)} — Résumé</title>
 <meta name="description" content="${e(desc)}">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="${CANONICAL}">
 <meta property="og:type" content="profile">
 <meta property="og:title" content="${e(resume.personal.name)} — Résumé">

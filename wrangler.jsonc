@@ -10,7 +10,10 @@
   "routes": [{ "pattern": "samstuhl.com", "custom_domain": true }],
 
   // Bundles build/assets/resume.pdf into the Worker as an ArrayBuffer.
-  "rules": [{ "type": "Data", "globs": ["**/*.pdf"] }],
+  "rules": [
+    { "type": "Data", "globs": ["**/*.pdf"] },
+    { "type": "Text", "globs": ["**/*.svg"] }
+  ],
 
   "observability": { "enabled": true }
 }

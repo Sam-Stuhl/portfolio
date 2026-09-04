@@ -10,6 +10,7 @@
 
 import { HTML_ETAG, PDF_ETAG, RESUME_HTML } from "./generated/resume";
 import resumePdf from "../build/assets/resume.pdf";
+import favicon from "./favicon.svg";
 
 const PDF_FILENAME = "Samuel-Stuhl-Resume.pdf";
 const CACHE = "public, max-age=300, must-revalidate";
@@ -51,6 +52,15 @@ export default {
     if (pathname === "/resume") {
       return send(request, RESUME_HTML, HTML_ETAG, {
         "content-type": "text/html; charset=utf-8",
+      });
+    }
+
+    if (pathname === "/favicon.svg") {
+      return new Response(request.method === "HEAD" ? null : favicon, {
+        headers: {
+          "content-type": "image/svg+xml; charset=utf-8",
+          "cache-control": "public, max-age=86400",
+        },
       });
     }
 
