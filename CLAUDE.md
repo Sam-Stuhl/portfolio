@@ -84,10 +84,16 @@ npm run build && npx wrangler deploy
 ## Caching
 
 Both responses carry `cache-control: public, max-age=300, must-revalidate` and
-an ETag hashed from the build, so a repeat visitor gets a 304. The tags are
-**weak** (`W/"..."`) on purpose: Cloudflare gzips the HTML at the edge and drops
-strong ETags on compressed responses, so a strong tag silently never reaches the
-browser. Do not "tidy" the `W/` away. A résumé change
+a weak ETag hashed from the build.
+
+In practice only `/resume.pdf` gets 304s. **Cloudflare strips the ETag from the
+HTML response**, verified 2026-09-03: it is absent with and without
+`accept-encoding: gzip`, the tags are already weak, and nothing is being
+injected into the body (byte count matches the render). The cause was not worth
+chasing further, since the page is 8.7 KB and this costs a full 200 instead of a
+304 at most once per five minutes per visitor. If you want it back, start by
+checking the zone's HTML-modifying features (Rocket Loader, Auto Minify, Browser
+Insights) rather than the Worker, which demonstrably sets the header. A résumé change
 is therefore live at the edge immediately but can sit in an individual
 browser's cache for up to five minutes. That is the intended trade; do not
 raise it without a reason.
