@@ -216,7 +216,9 @@ ${renderSections(resume.sections)}
 </html>
 `;
 
-const etag = (bytes) => `"${createHash("sha256").update(bytes).digest("hex").slice(0, 16)}"`;
+// Weak, not strong: Cloudflare gzips the HTML at the edge and drops strong
+// ETags on compressed responses, which would cost us the 304s entirely.
+const etag = (bytes) => `W/"${createHash("sha256").update(bytes).digest("hex").slice(0, 16)}"`;
 
 await mkdir(OUT, { recursive: true });
 await writeFile(

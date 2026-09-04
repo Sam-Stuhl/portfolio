@@ -84,7 +84,10 @@ npm run build && npx wrangler deploy
 ## Caching
 
 Both responses carry `cache-control: public, max-age=300, must-revalidate` and
-an ETag hashed from the build, so a repeat visitor gets a 304. A résumé change
+an ETag hashed from the build, so a repeat visitor gets a 304. The tags are
+**weak** (`W/"..."`) on purpose: Cloudflare gzips the HTML at the edge and drops
+strong ETags on compressed responses, so a strong tag silently never reaches the
+browser. Do not "tidy" the `W/` away. A résumé change
 is therefore live at the edge immediately but can sit in an individual
 browser's cache for up to five minutes. That is the intended trade; do not
 raise it without a reason.

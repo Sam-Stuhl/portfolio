@@ -18,10 +18,10 @@ const CACHE = "public, max-age=300, must-revalidate";
 function notModified(request: Request, etag: string): boolean {
   const ifNoneMatch = request.headers.get("if-none-match");
   if (!ifNoneMatch) return false;
-  return ifNoneMatch
-    .split(",")
-    .map((tag) => tag.trim().replace(/^W\//, ""))
-    .includes(etag);
+  // Compare on the opaque value alone: our tags are weak, and an intermediary
+  // may hand back either form.
+  const bare = (tag: string) => tag.trim().replace(/^W\//, "");
+  return ifNoneMatch.split(",").map(bare).includes(bare(etag));
 }
 
 function send(request: Request, body: BodyInit, etag: string, headers: HeadersInit): Response {
