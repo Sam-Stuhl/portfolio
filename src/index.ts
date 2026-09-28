@@ -1,7 +1,8 @@
 // samstuhl.com
 //
-// Today this serves exactly two things: the résumé as HTML and the same résumé
-// as a PDF download. Both are baked into the bundle at build time, so a request
+// Today this serves the résumé as HTML and the same résumé as a PDF download,
+// plus two small pages for ATLAS's Google sign-in (/atlas and /privacy, see
+// pages.ts). Both are baked into the bundle at build time, so a request
 // touches Cloudflare and nothing else.
 //
 // The custom domain claims the whole apex, so everything else gets a bare 404.
@@ -13,6 +14,7 @@ import resumePdf from "../build/assets/resume.pdf";
 import favicon from "./favicon.svg";
 import faviconPng from "./favicon-32.png";
 import appleTouchIcon from "./apple-touch-icon.png";
+import { ATLAS_HTML, PRIVACY_HTML } from "./pages";
 
 const PDF_FILENAME = "Samuel-Stuhl-Resume.pdf";
 const CACHE = "public, max-age=300, must-revalidate";
@@ -62,6 +64,15 @@ export default {
     if (pathname === "/resume") {
       return send(request, RESUME_HTML, HTML_ETAG, {
         "content-type": "text/html; charset=utf-8",
+      });
+    }
+
+    // Google's OAuth consent screen needs a homepage and a privacy policy on a
+    // domain Sam owns before ATLAS can leave Testing (2026-09-28).
+    const pages: Record<string, string> = { "/atlas": ATLAS_HTML, "/privacy": PRIVACY_HTML };
+    if (pathname in pages) {
+      return new Response(request.method === "HEAD" ? null : pages[pathname], {
+        headers: { "content-type": "text/html; charset=utf-8", "cache-control": CACHE },
       });
     }
 
