@@ -15,14 +15,14 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # Sam's runner on the mini (ghrunner), since GitHub-hosted jobs stopped
+    # starting on the account. Homebrew's node. See planner's
+    # ops/tests-runner/README.md, "Other repos on the same account".
+    runs-on: [self-hosted, macOS, portfolio]
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
+      - run: node --version
 
       - run: npm ci
 
