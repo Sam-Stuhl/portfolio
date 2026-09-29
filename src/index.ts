@@ -15,6 +15,9 @@ import favicon from "./favicon.svg";
 import faviconPng from "./favicon-32.png";
 import appleTouchIcon from "./apple-touch-icon.png";
 import { ATLAS_HTML, PRIVACY_HTML } from "./pages";
+import { today, type TodayEnv } from "./today/route";
+
+export { TodayStore } from "./today/route";
 
 const PDF_FILENAME = "Samuel-Stuhl-Resume.pdf";
 const CACHE = "public, max-age=300, must-revalidate";
@@ -47,8 +50,13 @@ function send(request: Request, body: BodyInit, etag: string, headers: HeadersIn
 }
 
 export default {
-  fetch(request: Request): Response {
+  async fetch(request: Request, env: TodayEnv): Promise<Response> {
     const { pathname } = new URL(request.url);
+
+    // Sam's Today dashboard, pushed here by ATLAS (src/today/route.ts). It
+    // answers only its own keys and 404s everything else under /today.
+    const dashboard = await today(request, env, pathname);
+    if (dashboard) return dashboard;
 
     if (request.method !== "GET" && request.method !== "HEAD") {
       return new Response("method not allowed\n", {
@@ -95,4 +103,4 @@ export default {
       headers: { "content-type": "text/plain; charset=utf-8" },
     });
   },
-} satisfies ExportedHandler;
+} satisfies ExportedHandler<TodayEnv>;

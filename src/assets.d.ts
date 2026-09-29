@@ -14,3 +14,9 @@ declare module "*.svg" {
   const content: string;
   export default content;
 }
+
+// ...and an imported .html into a string (the Today page).
+declare module "*.html" {
+  const content: string;
+  export default content;
+}
