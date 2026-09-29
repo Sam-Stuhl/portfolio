@@ -12,8 +12,20 @@
   // Bundles build/assets/resume.pdf into the Worker as an ArrayBuffer.
   "rules": [
     { "type": "Data", "globs": ["**/*.pdf", "**/*.png"] },
-    { "type": "Text", "globs": ["**/*.svg"] }
+    { "type": "Text", "globs": ["**/*.svg", "**/*.html"] }
   ],
 
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+
+  // The Today dashboard's latest snapshot (src/today/route.ts). SQLite-backed,
+  // which the free plan allows.
+  "durable_objects": { "bindings": [{ "name": "TODAY", "class_name": "TodayStore" }] },
+  "migrations": [{ "tag": "today-v1", "new_sqlite_classes": ["TodayStore"] }],
+
+  // SHA-256 of the two keys ATLAS made on the mini (python -m atlas.today
+  // hashes). Hashes, not keys: safe in a public repository.
+  "vars": {
+    "TODAY_VIEW_HASH": "42868a92b91c419b1e67219d16e976c9dd387c30cd0435859630b78a8cf592a9",
+    "TODAY_PUSH_HASH": "352a60997945cd850cb0ce4ed7f65580164357a08619e3e402be3a0118b4d9f1"
+  }
 }
