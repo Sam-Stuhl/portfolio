@@ -142,6 +142,11 @@
   details summary::-webkit-details-marker { display: none; }
   details[open] summary { display: none; }
 
+  .tm { display: grid; grid-template-columns: 70px 1fr; gap: 10px; padding: 7px 0; border-top: 1px solid var(--rule); }
+  .tm:first-of-type { border-top: 0; padding-top: 0; }
+  .tm .t { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+  .tm b { font-weight: 600; }
+  .tm i { display: block; font-style: normal; color: var(--muted); font-size: 14px; }
   .foot { text-align: center; color: var(--muted); font-size: 13px; margin-top: 18px; }
   .stale { background: var(--late-bg); color: var(--late); border-radius: 12px; padding: 9px 12px;
            font-size: 14px; margin-bottom: 12px; }
@@ -163,6 +168,7 @@
   <div class="cols">
     <div class="stack">
       <div class="hero" id="hero"><div class="hero-kicker">Loading your day</div></div>
+      <div class="panel" id="tomorrowpanel" hidden><h2>Tomorrow</h2><div id="tomorrow"></div></div>
       <div class="panel" id="daypanel"><h2>Your day</h2><div id="day"></div></div>
     </div>
     <div class="stack">
@@ -226,6 +232,44 @@
     $("wxnow").innerHTML = w
       ? `<div><div class="wx-temp">${w.temp}°</div><div class="wx-sub">${esc(w.label)}</div></div>${iconFor(w.code)}`
       : "";
+  }
+
+  // From 5pm the page looks ahead: tomorrow's first trip and tonight's review.
+  const isEvening = (now) => Number(fmt(now, { hour: "2-digit", hourCycle: "h23" })) >= 17;
+
+  function eveningHero(data, now) {
+    const el = $("hero");
+    const leave = data.leave_tomorrow;
+    const first = (data.tomorrow || []).find((e) => e.kind !== "commute");
+    el.className = "hero";
+    if (leave) {
+      const planned = leave.planned ? ` Your plan says ${clock(new Date(leave.planned))}.` : "";
+      el.innerHTML = `
+        <div class="hero-kicker">Tomorrow, leave by</div>
+        <div class="hero-time">${esc(clock(new Date(leave.at)))}</div>
+        <div class="hero-what">${esc(leave.for)}${leave.where ? ` in ${esc(leave.where)}` : ""} at ${esc(clock(new Date(leave.start)))}</div>
+        <div class="hero-how">${leave.minutes} min drive plus ${leave.buffer} min to spare.${esc(planned)}</div>`;
+    } else if (first) {
+      el.className = "hero calm";
+      el.innerHTML = `
+        <div class="hero-kicker">Tomorrow starts with</div>
+        <div class="hero-time">${esc(clock(new Date(first.start)))}</div>
+        <div class="hero-what">${esc(first.title)}</div>
+        <div class="hero-how">${esc(first.where || "")}</div>`;
+    } else {
+      el.className = "hero calm";
+      el.innerHTML = `
+        <div class="hero-kicker">Tomorrow</div>
+        <div class="hero-time">Open</div>
+        <div class="hero-what">Nothing on the calendar yet.</div>`;
+    }
+  }
+
+  function tomorrow(data) {
+    const list = (data.tomorrow || []).filter((e) => e.kind !== "commute");
+    $("tomorrowpanel").hidden = !list.length;
+    $("tomorrow").innerHTML = list.map((e) => `
+      <div class="tm"><div class="t">${esc(clock(new Date(e.start)))}</div><div><b>${esc(e.title)}</b>${e.where ? `<i>${esc(e.where)}</i>` : ""}</div></div>`).join("");
   }
 
   function hero(data, now) {
@@ -366,13 +410,15 @@
   }
 
   function brief(data, now) {
-    const b = data.brief;
+    const evening = isEvening(now) && data.review;
+    const b = evening ? data.review : data.brief;
+    $("briefpanel").querySelector("h2").textContent = evening ? "Tonight's review" : "The brief";
     $("briefpanel").hidden = !b;
     if (!b) return;
     const old = b.date && b.date !== data.date ? `<p class="empty">From ${esc(b.date)}; today's is written at 6.</p>` : "";
     // b.html was escaped and built on the mini (atlas/briefs.py to_html).
     $("brief").innerHTML = `<p class="brief-h">${esc(b.headline)}</p>${old}
-      <details><summary>Read the whole brief</summary><div class="brief-body">${b.html}</div></details>`;
+      <details><summary>Read all of it</summary><div class="brief-body">${b.html}</div></details>`;
   }
 
   async function load() {
@@ -389,7 +435,10 @@
     TZ = data.tz || TZ;
     const age = inMinutes(now - new Date(data.generated_at));
     $("stale").innerHTML = age > 20 ? `<div class="stale">Last updated ${span(age)} ago. The Mac mini may be offline, so this may be out of date.</div>` : "";
-    masthead(data, now); hero(data, now); dayView(data, now); weather(data, now);
+    const evening = isEvening(now);
+    masthead(data, now);
+    if (evening) { eveningHero(data, now); tomorrow(data); } else { hero(data, now); $("tomorrowpanel").hidden = true; }
+    dayView(data, now); weather(data, now);
     due(data, now); exams(data, now); needs(data); brief(data, now);
     $("updated").textContent = clock(new Date(data.generated_at));
   }
