@@ -197,6 +197,23 @@
     return h * 60 + m;
   };
   const dayKey = (d) => fmt(d, { year: "numeric", month: "2-digit", day: "2-digit" });
+  // Some times arrive as a wall clock in Sam's zone with no offset (the weather
+  // hours and sunset, an all-day deadline's date). new Date() would read those
+  // in the phone's zone, so find the instant that shows that wall clock in TZ.
+  const wall = (s) => {
+    const [d, t = "00:00"] = s.split("T");
+    const [y, mo, da] = d.split("-").map(Number);
+    const [h, mi] = t.split(":").map(Number);
+    const want = Date.UTC(y, mo - 1, da, h, mi);
+    let at = want;
+    for (let i = 0; i < 2; i++) {
+      const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+        timeZone: TZ, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric",
+      }).formatToParts(new Date(at)).map((x) => [x.type, x.value]));
+      at += want - Date.UTC(+p.year, p.month - 1, +p.day, +p.hour, +p.minute);
+    }
+    return new Date(at);
+  };
   const inMinutes = (ms) => Math.round(ms / 60000);
   const span = (m) => {
     const a = Math.abs(m);
@@ -363,17 +380,17 @@
     const hours = (w.hours || []).slice(0, 12);
     const wettest = hours.reduce((m, h) => (h.rain > m.rain ? h : m), { rain: -1 });
     let advice = `High ${w.hi}°, low ${w.lo}°. Feels like ${w.feels}° now.`;
-    if (wettest.rain >= 40) advice += ` Rain likely around ${hourOnly(new Date(wettest.t + ":00"))}, take a jacket.`;
+    if (wettest.rain >= 40) advice += ` Rain likely around ${hourOnly(wall(wettest.t))}, take a jacket.`;
     else if (w.rain < 20) advice += " Dry all day.";
-    const sunset = w.sunset ? ` Sunset ${clock(new Date(w.sunset + ":00"))}.` : "";
+    const sunset = w.sunset ? ` Sunset ${clock(wall(w.sunset))}.` : "";
     $("wx").innerHTML = `<div class="hours">${hours.map((h, i) => `
-      <div class="h"><div>${i === 0 ? "Now" : esc(hourOnly(new Date(h.t + ":00")))}</div>${iconFor(h.code)}<div class="t">${h.temp}°</div>
+      <div class="h"><div>${i === 0 ? "Now" : esc(hourOnly(wall(h.t)))}</div>${iconFor(h.code)}<div class="t">${h.temp}°</div>
       <div class="rainbar" title="${h.rain}% chance of rain"><div style="height:${Math.max(2, h.rain * 0.34)}px"></div></div><div class="p">${h.rain}%</div></div>`).join("")}</div>
       <div class="wx-line">${esc(advice)}${esc(sunset)}</div>`;
   }
 
   function due(data, now) {
-    const items = (data.due || []).map((i) => ({ ...i, at: i.all_day ? new Date(i.when + "T23:59:00") : new Date(i.when) }))
+    const items = (data.due || []).map((i) => ({ ...i, at: i.all_day ? wall(i.when + "T23:59") : new Date(i.when) }))
       .filter((i) => i.at > now);
     if (!items.length) { $("due").innerHTML = '<p class="empty">Nothing due this week.</p>'; return; }
     const today = dayKey(now), tomorrow = dayKey(new Date(now.getTime() + 86400000));
