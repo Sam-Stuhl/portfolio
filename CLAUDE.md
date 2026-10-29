@@ -1,8 +1,10 @@
 # portfolio
 
-Whatever `samstuhl.com` serves. Today that is exactly one thing: the résumé at
-`/resume`, plus the PDF at `/resume.pdf`. The portfolio site itself does not
-exist yet and is deliberately not designed here.
+Whatever `samstuhl.com` serves. Today that is the résumé at `/resume`, plus
+the PDF at `/resume.pdf`; ATLAS's Google consent pages at `/atlas` and
+`/privacy` (`src/pages.ts`); and Sam's private Today dashboard at
+`/today/<key>` (`src/today/`). The portfolio site itself does not exist yet
+and is deliberately not designed here.
 
 A Cloudflare Worker, TypeScript, no framework. `npm run dev` builds and serves
 on `localhost:8787`; `npm run check` typechecks; `npm test` runs the tests in `test/`; `npm run deploy` publishes.
@@ -26,8 +28,8 @@ model first. That is a real piece of work, not a config change.
 
 `wrangler.jsonc` declares a **custom domain**, not a path route, so Cloudflare
 manages the apex DNS record and certificate. That means every request to
-`samstuhl.com` reaches this Worker, and everything that is not `/resume` or
-`/resume.pdf` gets a plain 404. That is the intended "nothing here yet"
+`samstuhl.com` reaches this Worker, and everything that is not one of the
+routes above (or a favicon) gets a plain 404. That is the intended "nothing here yet"
 behaviour: a bare 404 rather than a Cloudflare origin error page.
 
 When the portfolio site arrives it either lives in this Worker or replaces the
