@@ -5,7 +5,7 @@ Whatever `samstuhl.com` serves. Today that is exactly one thing: the résumé at
 exist yet and is deliberately not designed here.
 
 A Cloudflare Worker, TypeScript, no framework. `npm run dev` builds and serves
-on `localhost:8787`; `npm run check` typechecks; `npm run deploy` publishes.
+on `localhost:8787`; `npm run check` typechecks; `npm test` runs the tests in `test/`; `npm run deploy` publishes.
 
 ## Why a Worker and not a console app
 

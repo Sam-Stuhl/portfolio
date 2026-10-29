@@ -9,7 +9,8 @@
     "build": "npm run fetch && npm run render",
     "check": "tsc --noEmit",
     "dev": "npm run build && wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test": "node --test test/*.test.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260903.1",
