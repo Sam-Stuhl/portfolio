@@ -169,7 +169,8 @@ ul { margin:2px 0 0; padding-left:17px; }
 li { font-size:12.5px; line-height:1.34; margin:1px 0; text-align:justify; }
 p.skill { margin:2px 0 0 10px; font-size:13px; line-height:1.35; }
 /* Sits outside the sheet: the resume is the document, this is chrome. Fixed so
-   it stays reachable while reading, and hidden from print. */
+   it stays reachable while reading, and hidden from print. On a phone there is
+   no margin to sit in, so it scrolls away rather than covering the text (#9). */
 .dl { position:fixed; top:20px; right:20px; display:flex; align-items:center;
   justify-content:center; width:38px; height:38px; color:#333; background:var(--bg);
   border:1px solid #c9c9cd; border-radius:7px; box-shadow:0 1px 2px rgba(0,0,0,.1);
@@ -190,7 +191,7 @@ p.skill { margin:2px 0 0 10px; font-size:13px; line-height:1.35; }
   .right { white-space:normal; font-size:13.5px; color:#555; }
   .entry { padding-left:0; }
   p.skill { margin-left:0; }
-  .dl { top:12px; right:12px; }
+  .dl { position:absolute; top:12px; right:12px; }
 }
 
 @media print { .dl { display:none; } }
