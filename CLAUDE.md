@@ -7,7 +7,7 @@ the PDF at `/resume.pdf`; ATLAS's Google consent pages at `/atlas` and
 and is deliberately not designed here.
 
 A Cloudflare Worker, TypeScript, no framework. `npm run dev` builds and serves
-on `localhost:8787`; `npm run check` typechecks; `npm test` runs the tests in `test/`; `npm run deploy` publishes.
+on `localhost:8787`; `npm run check` typechecks; `npm test` runs the tests in `test/` (the route tests in `test/routes.test.mjs` run the real Worker and skip unless `npm run build` has run); `npm run deploy` publishes.
 
 ## Why a Worker and not a console app
 
