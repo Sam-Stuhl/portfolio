@@ -65,8 +65,9 @@ export default {
       });
     }
 
-    if (pathname === "/resume/") {
-      return Response.redirect(new URL("/resume", request.url).toString(), 308);
+    // A trailing slash on any page goes to the page, not a 404.
+    if (["/resume/", "/atlas/", "/privacy/"].includes(pathname)) {
+      return Response.redirect(new URL(pathname.slice(0, -1), request.url).toString(), 308);
     }
 
     if (pathname === "/resume") {
